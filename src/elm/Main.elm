@@ -7,11 +7,24 @@ import User exposing (User)
 import Url exposing (Url)
 import Route exposing (Route)
 
+import Page
 import Page.Login as LoginPage
 import Api
 import Json.Decode exposing (Value)
-import Html exposing (text)
+import Html
+import Html.Attributes
 
+
+main : Program Value Model Msg
+main =
+    Api.application User.decoder
+        { init = init
+        , onUrlChange   = ChangedUrl
+        , onUrlRequest  = ClickedLink
+        , subscriptions = subscriptions
+        , update = update
+        , view = view
+        }
 
 type Model
     = Redirect Session
@@ -42,6 +55,64 @@ subscriptions model =
         Login login ->
             Sub.map GotLoginMsg (LoginPage.subscriptions login)
 
+update : Msg -> Model -> (Model, Cmd Msg)
+update msg model =
+    case (msg, model) of
+        (ClickedLink urlRequest, _ ) ->
+            case urlRequest of
+                Browser.Internal url ->
+                    case url.fragment of
+                        Nothing ->
+                            (model, Cmd.none)
+                        
+                        Just _ ->
+                            ( model
+                            , Nav.pushUrl (Session.navKey (toSession model)) (Url.toString url)
+                            )
+
+                Browser.External href ->
+                    ( model
+                    , Nav.load href
+                    )
+        
+        (ChangedUrl url, _) ->
+            changeRouteTo (Route.fromUrl url) model
+        
+
+        (GotLoginMsg subMsg, Login subModel) ->
+            LoginPage.update subMsg subModel
+                |> updateWith Login GotLoginMsg
+
+        (GotSession session, Redirect _) ->
+            ( Redirect session
+            , Route.replaceUrl (Session.navKey session) Route.Dashboard)
+
+        _ -> (model, Cmd.none)
+    
+
+
+view : Model -> Browser.Document Msg
+view model = 
+    let
+        user =
+            Session.currentUser (toSession model)
+        
+        viewPage page toMsg config =
+            let
+                {title, body} = Page.view user page config
+            in
+                { title = title
+                , body = List.map (Html.map toMsg) body
+                }
+            
+    in
+        case model of
+            Login subModel ->
+                viewPage Page.Login GotLoginMsg (LoginPage.view subModel)
+            
+            _ -> 
+                { title = "Unknown", body = [Html.text "Unknown Page", Html.a [Html.Attributes.href "#/login"] [Html.text "login"]]}
+    
 
 changeRouteTo : Maybe Route -> Model -> (Model, Cmd Msg)
 changeRouteTo maybeRoute model =
@@ -56,7 +127,9 @@ changeRouteTo maybeRoute model =
                 LoginPage.init session
                     |> updateWith Login GotLoginMsg
             
-            Just _ -> (model, Cmd.none)
+            Just _ ->
+                LoginPage.init session
+                    |> updateWith Login GotLoginMsg
 
 updateWith : (subModel -> Model) -> (subMsg -> Msg) -> (subModel, Cmd subMsg) -> (Model, Cmd Msg)
 updateWith toModel toMsg (subModel, subCmd) =
@@ -66,8 +139,8 @@ updateWith toModel toMsg (subModel, subCmd) =
     
 
 toSession : Model -> Session
-toSession page =
-    case page of
+toSession model =
+    case model of
         Redirect session ->
             session
         
@@ -76,29 +149,3 @@ toSession page =
         
         Login loginModel ->
             LoginPage.toSession loginModel
-
-
-main : Program Value Model Msg
-main =
-    Api.application User.decoder
-        { init = init
-        , onUrlChange   = ChangedUrl
-        , onUrlRequest  = ClickedLink
-        , subscriptions = subscriptions
-        , update = update
-        , view = view
-        }
-
-
-update : Msg -> Model -> (Model, Cmd msg)
-update msg model =
-    case msg of
-        _ -> (model, Cmd.none)
-    
-
-
-view : Model -> Browser.Document Msg
-view _ = 
-    { title = "App"
-    , body = [text "Hello World"]
-    }

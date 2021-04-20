@@ -1,4 +1,13 @@
 module Page.NotFound exposing (..)
 
-x = 3
+import Html exposing (Html, div, text)
+
+view : model -> {title : String, content : Html msg}
+view _ =
+    { title = "Not Found"
+    , content =
+        div []
+            [text "Page Not Found"]
+    }
+    
 

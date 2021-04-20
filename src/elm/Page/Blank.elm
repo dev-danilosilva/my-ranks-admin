@@ -1,3 +1,7 @@
 module Page.Blank exposing (..)
 
-x = 3
+import Html exposing (Html)
+import Html exposing (text)
+
+view : Html msg
+view = text "Redirecting..."

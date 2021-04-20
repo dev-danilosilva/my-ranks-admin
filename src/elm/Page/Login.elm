@@ -90,9 +90,12 @@ update msg model =
         _ -> (model, Cmd.none)
 
 
-view : Model -> Html Msg
+view : Model -> { title : String, content : Html Msg }
 view _ =
-    H.div [] [H.text "Login Page"]
+    { title = "Login"
+    , content =
+        H.div [] [H.text "Login Page"]
+    }
 
 updateModelForm : (Form -> Form) -> Model -> Model
 updateModelForm f model =
