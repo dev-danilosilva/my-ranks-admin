@@ -8,7 +8,8 @@ module User.Avatar exposing ( Avatar
 import Json.Encode as Encode exposing (Value)
 import Json.Decode as Decode exposing (Decoder)
 import Html exposing (Attribute)
-import Asset.Image as UserAsset
+import User.Asset as UserAsset
+import Asset.Image as Asset
 import Html.Attributes
 
 
@@ -34,13 +35,13 @@ src : Avatar -> Attribute msg
 src (Avatar maybeUrl) =
     case maybeUrl of
         Just ""  ->
-            UserAsset.src UserAsset.defaultAvatar
+            Asset.src UserAsset.defaultAvatar
         
         Just url ->
             Html.Attributes.src url
 
         Nothing ->
-            UserAsset.src UserAsset.defaultAvatar
+            Asset.src UserAsset.defaultAvatar
             
 
 toMaybeString : Avatar -> Maybe String

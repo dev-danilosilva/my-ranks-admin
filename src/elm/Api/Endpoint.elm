@@ -1,11 +1,9 @@
 module Api.Endpoint exposing ( Endpoint(..)
                              , login
                              , buildUrl
-                             , rankDetail
                              )
 
 import Url.Builder as UrlBuilder
-import Rank.Slug as RankModel
 
 
 type Endpoint = Endpoint String
@@ -23,7 +21,3 @@ buildUrl path queryParams =
 
 login : Endpoint
 login = buildUrl ["api", "login"] []
-
-
-rankDetail : RankModel.Slug -> Endpoint
-rankDetail slug = buildUrl ["api", "rank", RankModel.toString slug] []

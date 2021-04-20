@@ -13,10 +13,10 @@ cred : User -> Credential
 cred (User _ val) = val
 
 username : User -> Username
-username (User _ val) = Api.username val
+username (User _ u) = Api.username u
 
 avatar : User -> Avatar
-avatar (User val _) = val
+avatar (User a _) = a
 
 minPasswordChars : Int
 minPasswordChars = 6
@@ -26,3 +26,6 @@ decoder =
     Decode.succeed User
         |> custom (Decode.field "image" Avatar.decoder)
 
+store : User -> Cmd msg
+store (User _ _) =
+    Debug.todo "Store Crendentials in Local Storage"

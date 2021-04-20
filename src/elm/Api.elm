@@ -2,6 +2,7 @@ port module Api exposing (..)
 
 
 import Http
+import Json.Encode as Encode
 import Json.Decode as Decode exposing ( Decoder
                                       , Value
                                       )
@@ -15,6 +16,19 @@ import Util.Request exposing ( request
                              , headers
                              , url
                              )
+import User.Avatar exposing (Avatar)
+
+
+
+login : Http.Body -> Decoder (Credential -> a) -> (Result Http.Error a -> msg) -> Cmd msg
+login body decoder toMsg =
+    post Endpoint.login Nothing body toMsg (Decode.field "user" (decoderFromCred decoder))
+
+register : Http.Body -> Decoder (Credential -> a) -> (Result Http.Error a -> msg) -> Cmd msg
+register _ _ = 
+    Debug.todo "Endpoint to Register a new admin"
+
+
 
 port onStorageChange : (Value -> msg) -> Sub msg
 port storeCache : Maybe Value -> Cmd msg
@@ -41,8 +55,8 @@ username (Credential val _) =
 
 credHeader : Credential -> Http.Header
 credHeader (Credential _ token) =
-    Http.header "authorization" 
-        <| "Token " ++ token
+    "Token " ++ token
+        |> Http.header "authorization"
 
 
 decode : Decoder (Credential -> user) -> Value -> Result Decode.Error user
@@ -152,13 +166,20 @@ patch (Endpoint addrs) cred b toMsg decoder =
             |> request
 
 
-login : Http.Body -> Decoder (Credential -> a) -> (Result Http.Error a -> msg) -> Cmd msg
-login b decoder toMsg =
-    post Endpoint.login Nothing b toMsg (Decode.field "user" (decoderFromCred decoder))
 
-
-
-
-
-
+storeCredWith : Credential -> Avatar -> Cmd msg
+storeCredWith (Credential uname token) avatar =
+    let
+        json =
+            Encode.object
+                [ ("user"
+                  , Encode.object
+                        [ ("username", Username.encode uname)
+                        , ("token"   , Encode.string token)
+                        , ("image"   , User.Avatar.encode avatar )
+                        ]
+                  )
+                ]
+    in
+        storeCache (Just json)
 
