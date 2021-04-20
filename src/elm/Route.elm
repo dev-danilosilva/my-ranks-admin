@@ -4,15 +4,13 @@ module Route exposing ( Route(..)
                       , fromUrl
                       )
 
-import Browser.Navigation as Nav
-import User.Username exposing (Username)
-import Url.Parser as UrlParser exposing ( Parser
-                                        , (</>)
-                                        )
-
 import Html exposing (Attribute)
 import Html.Attributes as Attr
 import Url exposing (Url)
+import Browser.Navigation as Nav
+import Url.Parser as UrlParser exposing ( Parser
+                                        , (</>)
+                                        )
 
 
 type Route

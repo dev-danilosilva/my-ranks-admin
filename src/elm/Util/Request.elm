@@ -1,7 +1,7 @@
 module Util.Request exposing ( RequestConfig
                              , RequestConfigBuilder
                              , request
-                             , configRequest
+                             , config
                              , method
                              , body
                              , headers
@@ -30,19 +30,19 @@ type alias RequestConfigBuilder msg
 
 
 request : RequestConfig msg -> Cmd msg
-request config =
+request reqConfig =
     Http.request
-        { method  = config.method
-        , body    = config.body
-        , headers = config.headers
-        , url     = config.url
-        , timeout = config.timeout
-        , expect  = config.expect
-        , tracker = config.tracker
+        { method  = reqConfig.method
+        , body    = reqConfig.body
+        , headers = reqConfig.headers
+        , url     = reqConfig.url
+        , timeout = reqConfig.timeout
+        , expect  = reqConfig.expect
+        , tracker = reqConfig.tracker
         }
 
-configRequest :  Http.Expect msg -> RequestConfig msg
-configRequest expectation =
+config :  Http.Expect msg -> RequestConfig msg
+config expectation =
     { method  = "GET"
     , body    = Http.emptyBody
     , headers = []
@@ -54,29 +54,29 @@ configRequest expectation =
 
 
 method : String -> RequestConfigBuilder msg
-method met config = { config | method = met }
+method met reqConfig= { reqConfig| method = met }
 
 
 body : Http.Body -> RequestConfigBuilder msg
-body bd config = { config | body = bd }
+body bd reqConfig= { reqConfig| body = bd }
 
 
 headers : List Http.Header -> RequestConfigBuilder msg
-headers hs config =
-    { config | headers = hs }
+headers hs reqConfig=
+    { reqConfig| headers = hs }
 
 
 url : String -> RequestConfigBuilder msg
-url addr config = { config | url = addr }
+url addr reqConfig= { reqConfig| url = addr }
 
 
 timeout : Float -> RequestConfigBuilder msg
-timeout to config = { config | timeout = Just to }
+timeout to reqConfig= { reqConfig| timeout = Just to }
 
 
 expect : Http.Expect msg -> RequestConfigBuilder msg
-expect e config = { config | expect = e }
+expect e reqConfig= { reqConfig| expect = e }
 
 
 tracker : Maybe String -> RequestConfigBuilder msg
-tracker t config = { config | tracker = t  } 
+tracker t reqConfig= { reqConfig| tracker = t  } 

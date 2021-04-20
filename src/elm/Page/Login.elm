@@ -9,6 +9,7 @@ module Page.Login exposing ( Model
                            , init
                            , subscriptions
                            , update
+                           , view
                            )
 
 import Api
@@ -17,7 +18,7 @@ import Session exposing (Session)
 import User exposing (User)
 import Http
 import Route
-
+import Html as H exposing (Html)
 
 type alias Model =
     { session : Session
@@ -87,6 +88,11 @@ update msg model =
             )
         
         _ -> (model, Cmd.none)
+
+
+view : Model -> Html Msg
+view _ =
+    H.div [] [H.text "Login Page"]
 
 updateModelForm : (Form -> Form) -> Model -> Model
 updateModelForm f model =
