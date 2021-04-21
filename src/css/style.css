@@ -1,0 +1,101 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    color: #FFF;
+    font-size: 16px;
+    font-family: "Share Tech Mono", cursive;
+}
+
+a:active, a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.container {
+    min-height: 100vh;
+    padding: 50px;
+}
+
+.container.login-page {
+    display: grid;
+    place-items: center;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 100%);
+}
+
+.standard-header {
+    color: #FFF;
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 50px;
+    align-items: center;
+    padding: 0 30px;
+    justify-content: space-between;
+}
+
+.standard-header .logo {
+    font-size: 1.5em;
+}
+
+.standard-header .menu-items {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+    font-size: 1.3em;
+}
+
+.standard-header .menu-items:hover {
+    text-decoration: underline;
+}
+
+.login-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 30px;
+    border-radius: 30px;
+    height: 40%;
+    width: 50%;
+}
+
+.login-form input[type=email], .login-form input[type=password] {
+    font-family: "Share Tech Mono", cursive;
+    font-size: 1.3em;
+    height: 40px;
+    width: 70%;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    border: none;
+}
+
+.login-form input:focus {
+    outline: none;
+}
+
+.login-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #333;
+    width: 90px;
+    height: 40px;
+    cursor: pointer;
+    padding: 3px 10px;
+    border-radius: 5px;
+    border: 1px solid #FFF;
+    font-size: 1.1em;
+}
+
+.login-button:hover {
+    background-color: #112;
+}

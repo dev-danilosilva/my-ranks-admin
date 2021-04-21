@@ -19,6 +19,8 @@ import User exposing (User)
 import Http
 import Route
 import Html as H exposing (Html)
+import Html.Events as HEvents
+import Html.Attributes as Attr
 
 type alias Model =
     { session : Session
@@ -94,7 +96,26 @@ view : Model -> { title : String, content : Html Msg }
 view _ =
     { title = "Login"
     , content =
-        H.div [] [H.text "Login Page"]
+        H.div [Attr.class "container login-page"]
+            [ H.div [Attr.class "login-form"]
+                [ H.input [ HEvents.onInput EnteredEmail
+                          , Attr.type_ "email"
+                          , Attr.class "email-field"
+                          , Attr.placeholder "Email"
+                          ]
+                          []
+                , H.input [ HEvents.onInput EnteredPassword
+                          , Attr.type_ "password"
+                          , Attr.class "password-field"
+                          , Attr.placeholder "Password"
+                          ]
+                          []
+                , H.span [ HEvents.onClick SubmittedForm
+                         , Attr.class "login-button"
+                         ]
+                            [ H.text "Login" ]
+                ]
+            ]
     }
 
 updateModelForm : (Form -> Form) -> Model -> Model

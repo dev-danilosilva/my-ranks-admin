@@ -4,8 +4,9 @@ module Page exposing ( Page(..)
 
 import User exposing (User)
 import Browser exposing (Document)
-import Html exposing (Html, text, div, a)
+import Html exposing (Html, text, header, a, div)
 import Html.Attributes exposing (href)
+import Html.Attributes exposing (class)
 
 type Page
     = Login
@@ -23,8 +24,11 @@ view maybeUser page { title, content } =
 
 viewHeader : Page -> Maybe User -> Html msg
 viewHeader _ _ =
-    div []
-        [ text "Page Header"
-        , a [href "http://www.google.com"] [text "Google"]
+    header [class "standard-header"]
+        [ div [class "logo"] [text "My Ranks"]
+        , div [class "menu-items"]
+            [ a [href "#/home"] [text "Home"]
+            , a [href "#/login"] [text "Login"]
+            ]
         ]
     
