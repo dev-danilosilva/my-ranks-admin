@@ -52,7 +52,7 @@ a:active, a {
     font-size: 1.3em;
 }
 
-.standard-header .menu-items:hover {
+.standard-header .menu-items a:hover {
     text-decoration: underline;
 }
 

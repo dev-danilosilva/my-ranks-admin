@@ -89,11 +89,24 @@ update msg model =
             , Route.replaceUrl (Session.navKey session) Route.Dashboard
             )
         
+        SubmittedForm ->
+            case validate model.form of
+                Ok trimmedForm ->
+                    ( model
+                    , login trimmedForm
+                    )
+                
+                Err problems ->
+                    ( updateModelProblem (\_ -> Debug.log "problems" problems) model
+                    , Cmd.none
+                    )
+            
+        
         _ -> (model, Cmd.none)
 
 
 view : Model -> { title : String, content : Html Msg }
-view _ =
+view model =
     { title = "Login"
     , content =
         H.div [Attr.class "container login-page"]
@@ -114,14 +127,26 @@ view _ =
                          , Attr.class "login-button"
                          ]
                             [ H.text "Login" ]
+                , H.span []
+                    <| List.map problemView model.problem
                 ]
             ]
     }
+
+problemView : Problem -> Html Msg
+problemView problem =
+    case problem of
+        ServerError _ -> H.div [] [H.text "Server Error"]
+
+        InvalidEntry _ s -> H.div [] [H.text s]
 
 updateModelForm : (Form -> Form) -> Model -> Model
 updateModelForm f model =
     { model | form = f model.form }
 
+updateModelProblem : (List Problem -> List Problem) -> Model -> Model
+updateModelProblem f model =
+    { model | problem = f model.problem }
 -- Form
 
 fieldsToValidate : List ValidatedField

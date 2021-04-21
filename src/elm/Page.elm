@@ -4,8 +4,7 @@ module Page exposing ( Page(..)
 
 import User exposing (User)
 import Browser exposing (Document)
-import Html exposing (Html, text, header, a, div)
-import Html.Attributes exposing (href)
+import Html exposing (Html, text, header, div)
 import Html.Attributes exposing (class)
 
 type Page
@@ -26,9 +25,6 @@ viewHeader : Page -> Maybe User -> Html msg
 viewHeader _ _ =
     header [class "standard-header"]
         [ div [class "logo"] [text "My Ranks"]
-        , div [class "menu-items"]
-            [ a [href "#/home"] [text "Home"]
-            , a [href "#/login"] [text "Login"]
-            ]
+        , div [class "menu-items"] []
         ]
     
