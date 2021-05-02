@@ -136,9 +136,9 @@ view model =
 problemView : Problem -> Html Msg
 problemView problem =
     case problem of
-        ServerError _ -> H.div [] [H.text "Server Error"]
+        ServerError _ -> H.div [Attr.class "error-message"] [H.text "Server Error"]
 
-        InvalidEntry _ s -> H.div [] [H.text s]
+        InvalidEntry _ s -> H.div [Attr.class "error-message"] [H.text s]
 
 updateModelForm : (Form -> Form) -> Model -> Model
 updateModelForm f model =

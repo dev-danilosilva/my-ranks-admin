@@ -99,3 +99,7 @@ a:active, a {
 .login-button:hover {
     background-color: #112;
 }
+
+.error-message {
+    color: red;
+}
