@@ -5,3 +5,4 @@ repl-temp-*
 
 .idea
 .vscode
+src/js/app.js

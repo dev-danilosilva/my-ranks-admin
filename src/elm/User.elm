@@ -19,7 +19,7 @@ avatar : User -> Avatar
 avatar (User a _) = a
 
 minPasswordChars : Int
-minPasswordChars = 6
+minPasswordChars = 8
 
 decoder : Decoder (Credential -> User)
 decoder =
@@ -28,4 +28,4 @@ decoder =
 
 store : User -> Cmd msg
 store (User _ _) =
-    Debug.todo "Store Crendentials in Local Storage"
+    Cmd.none

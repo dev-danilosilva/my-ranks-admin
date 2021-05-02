@@ -35,8 +35,8 @@ login body decoder toMsg =
     post Endpoint.login Nothing body toMsg (Decode.field "user" (decoderFromCred decoder))
 
 register : Http.Body -> Decoder (Credential -> a) -> (Result Http.Error a -> msg) -> Cmd msg
-register _ _ = 
-    Debug.todo "Endpoint to Register a new admin"
+register _ _ _= 
+    Cmd.none
 
 logout : Cmd msg
 logout =

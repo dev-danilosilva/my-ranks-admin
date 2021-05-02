@@ -97,7 +97,7 @@ update msg model =
                     )
                 
                 Err problems ->
-                    ( updateModelProblem (\_ -> Debug.log "problems" problems) model
+                    ( updateModelProblem (\_ -> problems) model
                     , Cmd.none
                     )
             
